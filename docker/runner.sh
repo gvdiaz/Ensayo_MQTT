@@ -4,29 +4,19 @@
 # Primer versión para ejecutar scripts en contenedor
 
 # Configuración de script
-set -x
+# set -x
 
-PATH_REPO="$(cd ../ && cd ../ && pwd)"
+# Carpetas necesarias en proyecto
+PATH_REPO="$(cd ../ & cd ../ & pwd)"
 PATH_SCRIPTS="${PATH_REPO}/Scripts"
-PATH_VECTORES="${PATH_REPO}/Vectores"
-PATH_UTILS="${PATH_REPO}/utils"
-PATH_TOKEN="${PATH_REPO}/token"
-PATH_OUTPUT="${PATH_REPO}/output"
-
-# echo "Entradas a script $0"
-# echo $1
-# echo $2
+PATH_ENV="$(pwd)/proposal/meteo_mqtt_bridge/"
 
 # bash en imagen snappy_9_gvd
-sudo docker run --rm --name snappy_11_develop \
+sudo docker run -it --rm --name mqtt_test \
+    --env-file "${PATH_ENV}/.env" \
     -v $PATH_SCRIPTS:/src/Scripts \
-    -v $PATH_VECTORES:/src/Vectores \
-    -v $PATH_UTILS:/src/utils \
-    -v $PATH_TOKEN:/src/token \
-    -v $PATH_OUTPUT:/src/Output \
-    --workdir /src/Scripts \
-    snappy_11_gvd \
-    "python3" $1 $2
+    python_gvd \
+    "bash"
     # -p 8888:8888 \
     # bash
     # "jupyter" "notebook" "--allow-root"
