@@ -5,6 +5,10 @@ from typing import Dict, Any
 import paho.mqtt.client as mqtt
 from config import PUBLIC_BROKER_CONFIG, CEDALO_BROKERS, CHANNEL_NAMES
 
+mytransport = 'websockets'
+myprotocol=mqtt.MQTTv5
+s_keepalive = 60
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -18,10 +22,12 @@ class MeteoMQTTBridge:
         self.cedalo_clients = {}
         self.received_data = {}
         
-    def setup_cedalo_client(self, client_name: str, config: Dict[str, Any]) -> mqtt.Client:
-        """Setup and connect to a Cedalo broker"""
+    def setup_cedalo_client(self, client_name: str, config: Dict[str, Any]) -> mqtt:
+        print(config)
         try:
-            client = mqtt.Client(client_id=config["client_id"])
+            client = mqtt.Client(client_id=config["client_id"],
+                                transport=mytransport,
+                                protocol=myprotocol)
             
             # Set credentials if provided
             if config.get("username"):
@@ -32,7 +38,7 @@ class MeteoMQTTBridge:
             client.on_disconnect = self.on_cedalo_disconnect
             
             # Connect
-            client.connect(config["host"], config["port"], config["keepalive"])
+            client.connect(config["host"], config["port"], s_keepalive)
             client.loop_start()
             
             logger.info(f"Connected to Cedalo broker: {client_name} at {config['host']}:{config['port']}")
