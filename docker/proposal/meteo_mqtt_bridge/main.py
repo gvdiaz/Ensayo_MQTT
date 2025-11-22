@@ -5,7 +5,8 @@ from typing import Dict, Any
 import paho.mqtt.client as mqtt
 from config import PUBLIC_BROKER_CONFIG, CEDALO_BROKERS, CHANNEL_NAMES
 
-mytransport = 'websockets'
+# mytransport = 'websockets'
+mytransport = 'tcp'
 myprotocol=mqtt.MQTTv5
 s_keepalive = 60
 
@@ -111,14 +112,14 @@ class MeteoMQTTBridge:
         else:
             logger.error(f"Failed to connect to public broker, return code: {rc}")
     
-    def on_cedalo_connect(self, client, userdata, flags, rc):
+    def on_cedalo_connect(self, client, userdata, flags, rc, v5config=None):
         """Callback for Cedalo broker connections"""
         if rc == 0:
             logger.info(f"Successfully connected to Cedalo broker")
         else:
             logger.error(f"Failed to connect to Cedalo broker, return code: {rc}")
     
-    def on_cedalo_disconnect(self, client, userdata, rc):
+    def on_cedalo_disconnect(self, client, userdata, rc, properties):
         """Callback for Cedalo broker disconnections"""
         logger.warning(f"Disconnected from Cedalo broker, return code: {rc}")
     
