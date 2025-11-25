@@ -25,21 +25,22 @@ CEDALO_BROKERS = {
         "username": os.getenv("CEDALO_1_USERNAME", ""),
         "password": os.getenv("CEDALO_1_PASSWORD", ""),
         "client_id": "meteo_bridge_1"
-    },
-    "client_2": {
-        "host": os.getenv("CEDALO_2_HOST", "your-cedalo-instance-2.cedalo.com"),
-        "port": int(os.getenv("CEDALO_2_PORT", "1883")),
-        "username": os.getenv("CEDALO_2_USERNAME", ""),
-        "password": os.getenv("CEDALO_2_PASSWORD", ""),
-        "client_id": "meteo_bridge_2"
-    },
-    "client_3": {
-        "host": os.getenv("CEDALO_3_HOST", "your-cedalo-instance-3.cedalo.com"),
-        "port": int(os.getenv("CEDALO_3_PORT", "1883")),
-        "username": os.getenv("CEDALO_3_USERNAME", ""),
-        "password": os.getenv("CEDALO_3_PASSWORD", ""),
-        "client_id": "meteo_bridge_3"
     }
+    # },
+    # "client_2": {
+    #     "host": os.getenv("CEDALO_2_HOST", "your-cedalo-instance-2.cedalo.com"),
+    #     "port": int(os.getenv("CEDALO_2_PORT", "1883")),
+    #     "username": os.getenv("CEDALO_2_USERNAME", ""),
+    #     "password": os.getenv("CEDALO_2_PASSWORD", ""),
+    #     "client_id": "meteo_bridge_2"
+    # },
+    # "client_3": {
+    #     "host": os.getenv("CEDALO_3_HOST", "your-cedalo-instance-3.cedalo.com"),
+    #     "port": int(os.getenv("CEDALO_3_PORT", "1883")),
+    #     "username": os.getenv("CEDALO_3_USERNAME", ""),
+    #     "password": os.getenv("CEDALO_3_PASSWORD", ""),
+    #     "client_id": "meteo_bridge_3"
+    # }
 }
 
 # Channel naming configuration
