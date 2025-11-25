@@ -3,6 +3,7 @@ import logging
 import requests
 import paho.mqtt.client as mqtt
 from config import PUBLIC_BROKER_CONFIG, CEDALO_BROKERS, CHANNEL_NAMES
+import time
 
 
 # --------------------------
@@ -79,18 +80,47 @@ client.connect(BROKER, PORT)
 client.loop_start()
 
 
+# # --------------------------
+# # Publish once
+# # --------------------------
+# weather = get_weather()
+
+# if weather:
+#     payload = json.dumps(weather)
+#     result = client.publish(TOPIC, payload, qos=1)
+
+#     if result.rc == mqtt.MQTT_ERR_SUCCESS:
+#         logger.info(f"Published weather data to topic '{TOPIC}': {payload}")
+#     else:
+#         logger.error(f"Failed to publish. Error code: {result.rc}")
+
+# logger.info("Program finished.")
+
 # --------------------------
-# Publish once
+# Publish every 30 seconds
 # --------------------------
-weather = get_weather()
+logger.info("Starting periodic weather publishing (every 30 seconds)...")
 
-if weather:
-    payload = json.dumps(weather)
-    result = client.publish(TOPIC, payload, qos=1)
+try:
+    while True:
+        weather = get_weather()
 
-    if result.rc == mqtt.MQTT_ERR_SUCCESS:
-        logger.info(f"Published weather data to topic '{TOPIC}': {payload}")
-    else:
-        logger.error(f"Failed to publish. Error code: {result.rc}")
+        if weather:
+            payload = json.dumps(weather)
+            result = client.publish(TOPIC, payload, qos=1)
 
-logger.info("Program finished.")
+            if result.rc == mqtt.MQTT_ERR_SUCCESS:
+                logger.info(f"Published weather data to topic '{TOPIC}': {payload}")
+            else:
+                logger.error(f"Failed to publish. Error code: {result.rc}")
+        else:
+            logger.error("No weather data to publish.")
+
+        time.sleep(30)
+
+except KeyboardInterrupt:
+    logger.info("Stopping weather publisher...")
+
+finally:
+    client.loop_stop()
+    client.disconnect()
